@@ -1,0 +1,167 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buscar Fuentes | VIGIFIA</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --verde-principal: #3b6e3b;
+      --tierra: #8e6b4f;
+      --verde-acento: #4caf50;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: url('/static/img/fondo_agro.jpg') no-repeat center center fixed;
+      background-size: cover;
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    body::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-color: rgba(255, 255, 255, 0.3);
+      z-index: -1;
+      backdrop-filter: blur(3px);
+    }
+
+    header {
+      background: linear-gradient(to right, var(--verde-principal), var(--tierra));
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-weight: bold;
+      font-size: 1.8rem;
+    }
+
+    .usuario {
+      background-color: rgba(255,255,255,0.2);
+      padding: 0.5rem 1rem;
+      border-radius: 10px;
+    }
+
+    .contenedor {
+      flex: 1;
+      padding: 2rem;
+      margin: 0 auto;
+      max-width: 1100px;
+      width: 95%;
+    }
+
+    .filtros {
+      background-color: rgba(255,255,255,0.9);
+      padding: 1.5rem;
+      border-left: 5px solid var(--verde-acento);
+      border-radius: 10px;
+      margin-bottom: 2rem;
+    }
+
+    .listado-fuentes .item {
+      background: rgba(255,255,255,0.9);
+      border-left: 4px solid #6c757d;
+      margin-bottom: 1rem;
+      padding: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+    }
+
+    .listado-fuentes a {
+      text-decoration: none;
+    }
+
+    footer {
+      background: var(--verde-principal);
+      color: white;
+      text-align: center;
+      padding: 1rem 0;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">VIGIFIA</div>
+    <h1 class="h4 m-0"><i class="fas fa-search me-2"></i> Buscar Fuentes</h1>
+    <div>
+      {% if request.session.supabase_user %}
+        <span class="usuario">
+          <i class="fas fa-user"></i> {{ request.session.supabase_user }} | {{ request.session.supabase_class }}
+        </span>
+        <a href="{% url 'logout' %}" class="btn btn-light btn-sm ms-2">Salir</a>
+      {% else %}
+        <a href="{% url 'login' %}" class="btn btn-light btn-sm">Ingresar</a>
+      {% endif %}
+    </div>
+  </header>
+
+  <div class="contenedor">
+    <div class="mb-4">
+      <a href="{% url 'index_fuentes' %}" class="btn btn-outline-secondary">
+        <i class="fas fa-arrow-left me-2"></i> Volver
+      </a>
+    </div>
+
+    <div class="filtros">
+      <form method="get" action="{% url 'buscar_fuentes' %}" class="d-flex gap-2 mb-3">
+        <input type="text" name="query" class="form-control" placeholder="Buscar por nombre o etiqueta...">
+        <button type="submit" class="btn btn-success">
+          <i class="fas fa-search"></i> Buscar
+        </button>
+      </form>
+
+      <div class="mb-2">
+        <strong><i class="fas fa-tags"></i> Etiquetas:</strong>
+      </div>
+      <div class="d-flex flex-wrap gap-2">
+        {% for etiqueta in etiquetas %}
+          <a href="?etiqueta={{ etiqueta }}" class="btn btn-outline-success btn-sm">
+            <i class="fas fa-tag"></i> {{ etiqueta }}
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="listado-fuentes">
+      {% if resultados %}
+        {% for fuente in resultados %}
+          <div class="item d-flex justify-content-between align-items-center">
+            <div>
+              <a href="{{ fuente.url }}" target="_blank" class="fw-bold">
+                <i class="fas fa-link text-success me-2"></i>{{ fuente.nombre }}
+              </a>
+            </div>
+            <div>
+              <a href="{% url 'modificar_fuentes' fuente.id %}" class="btn btn-warning btn-sm me-2">
+                <i class="fas fa-edit"></i> Modificar
+              </a>
+              <a href="{% url 'borrar_fuentes' fuente.id %}" class="btn btn-danger btn-sm">
+                <i class="fas fa-trash-alt"></i> Borrar
+              </a>
+            </div>
+          </div>
+        {% endfor %}
+      {% else %}
+        <div class="alert alert-info mt-4">
+          <i class="fas fa-info-circle"></i> No se encontraron fuentes con esa búsqueda.
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <footer>
+    <p class="m-0">&copy; 2025 VIGIFIA - Ministerio de Agricultura</p>
+  </footer>
+</body>
+</html>

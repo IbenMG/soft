@@ -1,0 +1,104 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Administrar Usuarios</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS + FontAwesome -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            background: linear-gradient(to right, #f8f9fa, #e9ecef);
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+            padding: 2rem;
+            margin-top: 4rem;
+        }
+
+        .table th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .table td, .table th {
+            vertical-align: middle;
+        }
+
+        .btn i {
+            margin-right: 4px;
+        }
+
+        .title-icon {
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2><i class="fas fa-users-cog title-icon"></i> Gestión de Usuarios</h2>
+            <a href="{% url 'admin_index' %}" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left"></i> Volver al Panel
+            </a>
+        </div>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Usuario</th>
+                        <th>Email</th>
+                        <th>Rol</th>
+                        <th class="text-center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.class }}</td>
+                        <td class="text-center">
+                            <a href="{% url 'editar_usuario' user.id %}" class="btn btn-sm btn-outline-warning me-1">
+                                <i class="fas fa-edit"></i> Editar
+                            </a>
+                            <a href="{% url 'eliminar_usuario' user.id %}" class="btn btn-sm btn-outline-danger">
+                                <i class="fas fa-trash-alt"></i> Eliminar
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center text-muted">No hay usuarios registrados.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

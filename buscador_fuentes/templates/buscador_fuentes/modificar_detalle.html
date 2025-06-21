@@ -1,0 +1,15 @@
+{% load static %}
+<form method="post">
+    {% csrf_token %}
+    <label for="nombre">Nombre:</label>
+    <input type="text" name="nombre" value="{{ fuente.nombre }}">
+
+    <label for="link">Link:</label>
+    <input type="text" name="link" value="{{ fuente.link }}">
+
+    <label for="etiquetas">Etiquetas (separadas por comas):</label>
+    <input type="text" name="etiquetas" value="{{ fuente.etiquetas|join:', ' }}">
+
+    <button type="submit">Guardar Cambios</button>
+</form>
+<a href="{% url 'index_fuentes' %}">Regresar al inicio</a>

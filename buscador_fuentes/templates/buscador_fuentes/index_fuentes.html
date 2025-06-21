@@ -1,0 +1,157 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fuentes de Información | VIGIFIA</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --verde-campo: #3b6e3b;
+      --tierra-profunda: #8e6b4f;
+      --verde-claro: #4caf50;
+      --blanco-trans: rgba(255,255,255,0.9);
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: url('/static/img/fondo_agro.jpg') no-repeat center center fixed;
+      background-size: cover;
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    body::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background-color: rgba(255,255,255,0.3);
+      backdrop-filter: blur(3px);
+    }
+
+    header {
+      background: linear-gradient(90deg, var(--verde-campo), var(--tierra-profunda));
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: bold;
+    }
+
+    .usuario {
+      background: rgba(255,255,255,0.2);
+      padding: 0.5rem 1rem;
+      border-radius: 10px;
+    }
+
+    .contenedor {
+      flex: 1;
+      padding: 2rem;
+      max-width: 960px;
+      margin: 0 auto;
+      width: 95%;
+      background: var(--blanco-trans);
+      border-radius: 15px;
+      box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+    }
+
+    .titulo {
+      text-align: center;
+      color: var(--verde-campo);
+      margin-bottom: 1rem;
+      border-bottom: 2px solid var(--verde-claro);
+      padding-bottom: 0.5rem;
+    }
+
+    .tarjeta-opcion {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 10px;
+      text-align: center;
+      transition: all 0.3s;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .tarjeta-opcion:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+
+    .tarjeta-opcion i {
+      font-size: 2.5rem;
+      color: var(--verde-claro);
+      margin-bottom: 0.5rem;
+    }
+
+    .acciones {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+
+    footer {
+      background: var(--verde-campo);
+      color: white;
+      text-align: center;
+      padding: 1rem 0;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">VIGIFIA</div>
+    <h1 class="h5"><i class="fas fa-database me-2"></i> Fuentes de Información</h1>
+    <div>
+      {% if request.session.supabase_user %}
+        <span class="usuario">
+          <i class="fas fa-user"></i> {{ request.session.supabase_user }} | {{ request.session.supabase_class }}
+        </span>
+        <a href="{% url 'logout' %}" class="btn btn-light btn-sm ms-2">Salir</a>
+      {% else %}
+        <a href="{% url 'login' %}" class="btn btn-light btn-sm">Ingresar</a>
+      {% endif %}
+    </div>
+  </header>
+
+  <main class="contenedor">
+    <h2 class="titulo"><i class="fas fa-filter"></i> Gestión de Fuentes</h2>
+    <p class="text-center">Consulta fuentes relevantes sobre Cambio Climático, Alimentación Sostenible y Recursos Hídricos.</p>
+
+    <div class="acciones">
+      <a href="{% url 'agregar_fuentes' %}" class="tarjeta-opcion text-decoration-none">
+        <i class="fas fa-plus-circle"></i>
+        <h5 class="mt-2">Agregar Fuente</h5>
+        <p class="text-muted">Registrar nueva fuente de información</p>
+      </a>
+
+      <a href="{% url 'buscar_fuentes' %}" class="tarjeta-opcion text-decoration-none">
+        <i class="fas fa-search"></i>
+        <h5 class="mt-2">Buscar Fuentes</h5>
+        <p class="text-muted">Buscar por nombre o etiqueta</p>
+      </a>
+    </div>
+
+    <div class="text-center mt-4">
+      <a href="{% url 'admin_index' %}" class="btn btn-outline-success">
+        <i class="fas fa-arrow-left me-2"></i> Volver
+      </a>
+    </div>
+  </main>
+
+  <footer>
+    <p class="m-0">&copy; 2025 VIGIFIA - Ministerio de Agricultura</p>
+  </footer>
+</body>
+</html>

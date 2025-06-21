@@ -1,0 +1,7 @@
+{% load static %}
+<p>¿Seguro que deseas borrar la fuente <strong>{{ fuente.nombre }}</strong>?</p>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Sí, borrar</button>
+    <a href="{% url 'index_fuentes' %}">Cancelar</a>
+</form>

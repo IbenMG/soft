@@ -1,0 +1,18 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalles del PDF</title>
+</head>
+<body>
+    <h1>Detalles del PDF: {{ documento.nombre }}</h1>
+    <p>Nombre: {{ documento.nombre }}</p>
+    <p>Etiquetas: {{ documento.etiquetas }}</p>
+
+    <a href="{% url 'descargar_pdf' documento.id %}">Descargar PDF</a> |
+    <a href="{% url 'confirmar_borrar' pdf_id=documento.id %}">Eliminar PDF</a>
+
+    <a href="{% url 'index_pdfs' %}">Volver al índice</a>
+</body>
+</html>

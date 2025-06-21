@@ -1,0 +1,16 @@
+{% load static %}
+<h1>Lista de PDFs</h1>
+<form method="get" action="{% url 'listar_pdfs' %}">
+    <input type="text" name="q" placeholder="Buscar por nombre">
+    <button type="submit">Buscar</button>
+</form>
+<ul>
+    {% for pdf in pdfs %}
+        <li>{{ pdf.nombre }} - 
+            <a href="{% url 'descargar_pdf' pdf.id %}">Descargar</a>
+        </li>
+    {% empty %}
+        <li>No se encontraron PDFs.</li>
+    {% endfor %}
+</ul>
+<a href="{% url 'subir_pdf' %}">Subir un nuevo PDF</a>

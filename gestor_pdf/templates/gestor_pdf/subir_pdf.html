@@ -1,0 +1,8 @@
+{% load static %}
+<h1>Subir un nuevo PDF</h1>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Subir PDF</button>
+</form>
+<a href="{% url 'listar_pdfs' %}">Volver a la lista de PDFs</a>
