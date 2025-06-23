@@ -7,3 +7,7 @@ Integrantes
 * Francisco Encina - Rol:202030536-6
 *  **Tutor**: Eduardo Mendoza
 *  [enlace video presentación del cliente](https://www.youtube.com/watch?v=abJau21SDIk)
+
+## Wiki
+
+Puede acceder a la wiki mediante el siguiente [enlace](https://github.com/IbenMG/soft/wiki)
